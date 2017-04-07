@@ -1,0 +1,666 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/hapijs/inert#readme"
+
+    >inert (v4.2.0)</a>
+</h1>
+<h4>Static file and directory handlers plugin for hapi.js</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.inert">module inert</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.register">
+            function <span class="apidocSignatureSpan">inert.</span>register
+            <span class="apidocSignatureSpan">(server, options, next)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">inert.</span>directory</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">inert.</span>etag</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">inert.</span>file</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">inert.</span>fs</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.inert.directory">module inert.directory</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.directory.handler">
+            function <span class="apidocSignatureSpan">inert.directory.</span>handler
+            <span class="apidocSignatureSpan">(route, options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.inert.etag">module inert.etag</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.etag.Cache">
+            function <span class="apidocSignatureSpan">inert.etag.</span>Cache
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.etag.apply">
+            function <span class="apidocSignatureSpan">inert.etag.</span>apply
+            <span class="apidocSignatureSpan">(response, stat, next)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.inert.file">module inert.file</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.file.handler">
+            function <span class="apidocSignatureSpan">inert.file.</span>handler
+            <span class="apidocSignatureSpan">(route, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.file.load">
+            function <span class="apidocSignatureSpan">inert.file.</span>load
+            <span class="apidocSignatureSpan">(path, request, options, callback)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.file.response">
+            function <span class="apidocSignatureSpan">inert.file.</span>response
+            <span class="apidocSignatureSpan">(path, options, request, _preloaded)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.inert.fs">module inert.fs</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.inert.fs.File">
+            function <span class="apidocSignatureSpan">inert.fs.</span>File
+            <span class="apidocSignatureSpan">(path)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.inert" id="apidoc.module.inert">module inert</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.inert.register" id="apidoc.element.inert.register">
+        function <span class="apidocSignatureSpan">inert.</span>register
+        <span class="apidocSignatureSpan">(server, options, next)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">register = function (server, options, next) {
+
+    const settings = Hoek.applyToDefaults(internals.defaults, options);
+
+    server.expose(&#x27;_etags&#x27;, settings.etagsCacheMaxSize ? new Etag.Cache(settings.etagsCacheMaxSize) : null);
+
+    server.handler(&#x27;file&#x27;, File.handler);
+    server.handler(&#x27;directory&#x27;, Directory.handler);
+
+    server.decorate(&#x27;reply&#x27;, &#x27;file&#x27;, function (path, responseOptions) {
+
+        // Set correct confine value
+
+        responseOptions = responseOptions || {};
+
+        if (typeof responseOptions.confine === &#x27;undefined&#x27; || responseOptions.confine === true) {
+            responseOptions.confine = &#x27;.&#x27;;
+        }
+
+        Hoek.assert(responseOptions.end === undefined || +responseOptions.start &#x3c;= +responseOptions.end, &#x27;options.start must be
+less than or equal to options.end&#x27;);
+
+        return this.response(File.response(path, responseOptions, this.request));
+    });
+
+    return next();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+            relativeTo: Path.join(__dirname, &#x27;public&#x27;)
+        }
+    }
+}
+});
+server.connection({ port: 3000 });
+
+server.<span class="apidocCodeKeywordSpan">register</span>(Inert, () =&#x3e; {});
+
+server.route({
+method: &#x27;GET&#x27;,
+path: &#x27;/{param*}&#x27;,
+handler: {
+    directory: {
+        path: &#x27;.&#x27;,
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.inert.directory" id="apidoc.module.inert.directory">module inert.directory</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.inert.directory.handler" id="apidoc.element.inert.directory.handler">
+        function <span class="apidocSignatureSpan">inert.directory.</span>handler
+        <span class="apidocSignatureSpan">(route, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">handler = function (route, options) {
+
+    const settings = Joi.attempt(options, internals.schema, &#x27;Invalid directory handler options (&#x27; + route.path + &#x27;)&#x27;);
+    Hoek.assert(route.path[route.path.length - 1] === &#x27;}&#x27;, &#x27;The route path for a directory handler must end with a parameter:&#x27;,
+route.path);
+
+    const paramName = /\w+/.exec(route.path.slice(route.path.lastIndexOf(&#x27;{&#x27;)))[0];
+
+    const normalize = (paths) =&#x3e; {
+
+        const normalized = [];
+        for (let i = 0; i &#x3c; paths.length; ++i) {
+            let path = paths[i];
+
+            if (!Path.isAbsolute(path)) {
+                path = Path.join(route.settings.files.relativeTo, path);
+            }
+
+            normalized.push(path);
+        }
+
+        return normalized;
+    };
+
+    const normalized = (Array.isArray(settings.path) ? normalize(settings.path) : []);            // Array or function
+
+    const indexNames = (settings.index === true) ? [&#x27;index.html&#x27;] : (settings.index || []);
+
+    // Declare handler
+
+    const handler = (request, reply) =&#x3e; {
+
+        let paths = normalized;
+        if (typeof settings.path === &#x27;function&#x27;) {
+            const result = settings.path.call(null, request);
+            if (result instanceof Error) {
+                return reply(result);
+            }
+
+            if (Array.isArray(result)) {
+                paths = normalize(result);
+            }
+            else if (typeof result === &#x27;string&#x27;) {
+                paths = normalize([result]);
+            }
+            else {
+                return reply(Boom.badImplementation(&#x27;Invalid path function&#x27;));
+            }
+        }
+
+        // Append parameter
+
+        const selection = request.params[paramName];
+        if (selection &#x26;&#x26;
+            !settings.showHidden &#x26;&#x26;
+            internals.isFileHidden(selection)) {
+
+            return reply(Boom.notFound());
+        }
+
+        // Generate response
+
+        const resource = request.path;
+        const hasTrailingSlash = resource.endsWith(&#x27;/&#x27;);
+        const fileOptions = {
+            confine: null,
+            lookupCompressed: settings.lookupCompressed,
+            lookupMap: settings.lookupMap,
+            etagMethod: settings.etagMethod
+        };
+
+        Items.serial(paths, (baseDir, nextPath) =&#x3e; {
+
+            fileOptions.confine = baseDir;
+
+            let path = selection || &#x27;&#x27;;
+
+            File.load(path, request, fileOptions, (response) =&#x3e; {
+
+                // File loaded successfully
+
+                if (!response.isBoom) {
+                    return reply(response);
+                }
+
+                // Not found
+
+                const err = response;
+                if (err.output.statusCode === 404) {
+                    if (!settings.defaultExtension) {
+                        return nextPath();
+                    }
+
+                    if (hasTrailingSlash) {
+                        path = path.slice(0, -1);
+                    }
+
+                    return File.load(path + &#x27;.&#x27; + settings.defaultExtension, request, fileOptions, (extResponse) =&#x3e; {
+
+                        if (!extResponse.isBoom) {
+                            return reply(extResponse);
+                        }
+
+                        return nextPath();
+                    });
+                }
+
+                // Propagate non-directory errors
+
+                if (err.output.statusCode !== 403 || err.data !== &#x27;EISDIR&#x27;) {
+                    return reply(err);
+                }
+
+                // Directory
+
+                if (indexNames.length === 0 &#x26;&#x26;
+                    !settings.listing) {
+
+                    return reply(Boom.forbidden());
+                }
+
+                if (settings.redirectToSlash !== false &#x26;&#x26;                       // Defaults to true
+                    !request.connection.settings.router.stripTrailingSlash &#x26;&#x26;
+                    !hasTrailingSlash) {
+
+                    return reply.redirect(resource + &#x27;/&#x27;);
+                }
+
+                Items.serial(indexNames, (indexName, nextIndex) =&#x3e; {
+
+                    const indexFile = Path.join(path, indexName);
+                    File.load(indexFile, request, fileOption ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.inert.etag" id="apidoc.module.inert.etag">module inert.etag</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.inert.etag.Cache" id="apidoc.element.inert.etag.Cache">
+        function <span class="apidocSignatureSpan">inert.etag.</span>Cache
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function LRUCache(options) {
+  if (!(this instanceof LRUCache)) {
+    return new LRUCache(options)
+  }
+
+  if (typeof options === &#x27;number&#x27;) {
+    options = { max: options }
+  }
+
+  if (!options) {
+    options = {}
+  }
+
+  var max = priv(this, &#x27;max&#x27;, options.max)
+  // Kind of weird to have a default max of Infinity, but oh well.
+  if (!max ||
+      !(typeof max === &#x27;number&#x27;) ||
+      max &#x3c;= 0) {
+    priv(this, &#x27;max&#x27;, Infinity)
+  }
+
+  var lc = options.length || naiveLength
+  if (typeof lc !== &#x27;function&#x27;) {
+    lc = naiveLength
+  }
+  priv(this, &#x27;lengthCalculator&#x27;, lc)
+
+  priv(this, &#x27;allowStale&#x27;, options.stale || false)
+  priv(this, &#x27;maxAge&#x27;, options.maxAge || 0)
+  priv(this, &#x27;dispose&#x27;, options.dispose)
+  this.reset()
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.inert.etag.apply" id="apidoc.element.inert.etag.apply">
+        function <span class="apidocSignatureSpan">inert.etag.</span>apply
+        <span class="apidocSignatureSpan">(response, stat, next)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">apply = function (response, stat, next) {
+
+    const etagMethod = response.source.settings.etagMethod;
+    if (etagMethod === false) {
+        return next();
+    }
+
+    const applyEtag = (err, etag) =&#x3e; {
+
+        if (err) {
+            return next(err);
+        }
+
+        if (etag !== null) {
+            response.etag(etag, { vary: true });
+        }
+
+        return next();
+    };
+
+    if (etagMethod === &#x27;simple&#x27;) {
+        return internals.computeSimple(response, stat, applyEtag);
+    }
+
+    return internals.computeHashed(response, stat, applyEtag);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        response.header(&#x27;last-modified&#x27;, stat.mtime.toUTCString());
+
+        if (response.source.settings.mode) {
+const fileName = response.source.settings.filename || Path.basename(path);
+response.header(&#x27;content-disposition&#x27;, response.source.settings.mode + &#x27;; filename=&#x27; + encodeURIComponent(fileName
+));
+        }
+
+        Etag.<span class="apidocCodeKeywordSpan">apply</span>(response, stat, (err) =&#x3e; {
+
+if (err) {
+    internals.close(response);
+    return callback(err);
+}
+
+return callback(response);
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.inert.file" id="apidoc.module.inert.file">module inert.file</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.inert.file.handler" id="apidoc.element.inert.file.handler">
+        function <span class="apidocSignatureSpan">inert.file.</span>handler
+        <span class="apidocSignatureSpan">(route, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">handler = function (route, options) {
+
+    let settings = Joi.attempt(options, internals.schema, &#x27;Invalid file handler options (&#x27; + route.path + &#x27;)&#x27;);
+    settings = (typeof options !== &#x27;object&#x27; ? { path: options, confine: &#x27;.&#x27; } : settings);
+    settings.confine = settings.confine === true ? &#x27;.&#x27; : settings.confine;
+    Hoek.assert(typeof settings.path !== &#x27;string&#x27; || settings.path[settings.path.length - 1] !== &#x27;/&#x27;, &#x27;File path cannot end with
+ a\&#x27;/\&#x27;:&#x27;, route.path);
+
+    const handler = (request, reply) =&#x3e; {
+
+        const path = (typeof settings.path === &#x27;function&#x27; ? settings.path(request) : settings.path);
+        return reply(exports.response(path, settings, request));
+    };
+
+    return handler;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.inert.file.load" id="apidoc.element.inert.file.load">
+        function <span class="apidocSignatureSpan">inert.file.</span>load
+        <span class="apidocSignatureSpan">(path, request, options, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">load = function (path, request, options, callback) {
+
+    const response = exports.response(path, options, request, true);
+    return internals.prepare(response, callback);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+        Items.serial(paths, (baseDir, nextPath) =&#x3e; {
+
+            fileOptions.confine = baseDir;
+
+            let path = selection || &#x27;&#x27;;
+
+            File.<span class="apidocCodeKeywordSpan">load</span>(path, request, fileOptions, (response) =&#x3e; {
+
+// File loaded successfully
+
+if (!response.isBoom) {
+    return reply(response);
+}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.inert.file.response" id="apidoc.element.inert.file.response">
+        function <span class="apidocSignatureSpan">inert.file.</span>response
+        <span class="apidocSignatureSpan">(path, options, request, _preloaded)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">response = function (path, options, request, _preloaded) {
+
+    Hoek.assert(!options.mode || [&#x27;attachment&#x27;, &#x27;inline&#x27;].indexOf(options.mode) !== -1, &#x27;options.mode must be either false, attachment
+, or inline&#x27;);
+
+    if (options.confine) {
+        const confineDir = Path.resolve(request.route.settings.files.relativeTo, options.confine);
+        path = Path.isAbsolute(path) ? Path.normalize(path) : Path.join(confineDir, path);
+
+        // Verify that resolved path is within confineDir
+        if (path.lastIndexOf(confineDir, 0) !== 0) {
+            path = null;
+        }
+    }
+    else {
+        path = Path.isAbsolute(path) ? Path.normalize(path) : Path.join(request.route.settings.files.relativeTo, path);
+    }
+
+    const source = {
+        path,
+        settings: options,
+        stat: null,
+        file: null
+    };
+
+    const prepare = _preloaded ? null : internals.prepare;
+
+    return request.generateResponse(source, { variety: &#x27;file&#x27;, marshal: internals.marshal, prepare, close: internals.close });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    settings = (typeof options !== &#x27;object&#x27; ? { path: options, confine: &#x27;.&#x27; } : settings);
+    settings.confine = settings.confine === true ? &#x27;.&#x27; : settings.confine;
+    Hoek.assert(typeof settings.path !== &#x27;string&#x27; || settings.path[settings.path.length - 1] !== &#x27;/&#x27;, &#x27;
+File path cannot end with a\&#x27;/\&#x27;:&#x27;, route.path);
+
+    const handler = (request, reply) =&#x3e; {
+
+        const path = (typeof settings.path === &#x27;function&#x27; ? settings.path(request) : settings.path);
+        return reply(exports.<span class="apidocCodeKeywordSpan">response</span>(path, settings, request));
+    };
+
+    return handler;
+};
+
+
+exports.load = function (path, request, options, callback) {
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.inert.fs" id="apidoc.module.inert.fs">module inert.fs</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.inert.fs.File" id="apidoc.element.inert.fs.File">
+        function <span class="apidocSignatureSpan">inert.fs.</span>File
+        <span class="apidocSignatureSpan">(path)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">File = function (path) {
+
+    this.path = path;
+    this.fd = null;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    if (path === null) {
+return process.nextTick(() =&#x3e; {
+
+    return callback(Boom.forbidden(null, &#x27;EACCES&#x27;));
+});
+    }
+
+    const file = response.source.file = new Fs.<span class="apidocCodeKeywordSpan">File</span>(path);
+
+    file.openStat(&#x27;r&#x27;, (err, stat) =&#x3e; {
+
+if (err) {
+    return callback(err);
+}
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
